@@ -1,0 +1,24 @@
+# Local configuration and instructions
+.env
+.env.*
+!.env.example
+AGENTS.md
+
+# Virtual environments and Python caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Generated SQLite files (including journals and WAL files)
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*

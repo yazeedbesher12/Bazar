@@ -1,0 +1,34 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      CATALOG_URL: ${CATALOG_URL:-http://catalog:5001}
+      ORDER_URL: ${ORDER_URL:-http://order:5002}
+
+  catalog:
+    build:
+      context: .
+      dockerfile: catalog/Dockerfile
+    ports:
+      - "5001:5001"
+    volumes:
+      - catalog_data:/data
+
+  order:
+    build:
+      context: .
+      dockerfile: order/Dockerfile
+    ports:
+      - "5002:5002"
+    environment:
+      CATALOG_URL: ${CATALOG_URL:-http://catalog:5001}
+    volumes:
+      - order_data:/data
+
+volumes:
+  catalog_data:
+  order_data:
