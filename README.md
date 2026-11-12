@@ -1,8 +1,11 @@
 # Bazar.com
 
 Bazar.com is a Distributed and Operating Systems lab: a two-tier bookstore with
-three independent Python/Flask HTTP services. Expanded Step 3 completes search,
-book info, and single-copy purchases through Frontend, with a host-side CLI.
+three independent Python/Flask HTTP services. The completed implementation provides
+search, book info, and single-copy purchases through Frontend, with a host-side
+CLI. Step 4 verified the implementation with automated tests and real Docker
+execution; see [verification.md](docs/verification.md) and
+[sample-output.txt](docs/sample-output.txt) for actual results.
 Each service exposes
 `GET /health`, returning HTTP 200 with
 `{"service":"frontend","status":"ok"}` (or `catalog` / `order`). Health checks
@@ -124,7 +127,8 @@ docker compose down
 
 This removes the containers and network while retaining the two named volumes.
 
-See [docs/README.md](docs/README.md) for eventual submission documentation.
+See [docs/README.md](docs/README.md) for submission documentation, including the
+[design report](docs/design-report.md) and its [PDF edition](docs/design-report.pdf).
 
 ## Automated tests
 
@@ -219,7 +223,7 @@ failure prevents that service starting. Health never queries a database.
 Prices are integer cents in both databases, exposed as JSON numeric currency
 units. Existing Catalog serialization uses floating-point JSON numbers, so very
 large prices can lose cent precision over HTTP; use the documented demo-sized
-prices for this lab. Catalog is unchanged in this step.
+prices for this lab.
 
 ## Host CLI (Windows PowerShell)
 
@@ -242,7 +246,10 @@ exit nonzero without a traceback. Purchase failures warn against automatic repla
 
 ## Request-flow manual checks (Windows PowerShell)
 
-These are instructions only; none have been executed for this implementation.
+Step 4 completed request-flow, concurrency, restart, and outage checks in an
+isolated environment. Actual commands and results are recorded in
+[verification.md](docs/verification.md) and [sample-output.txt](docs/sample-output.txt).
+The block below is a reproduction guide, not a verbatim execution transcript.
 Run from the repository root after installing the client as above. Wait for the
 health GETs to succeed after starts/restarts; repeat GETs as needed, never POST
 automatically. Use a quiet demo environment without other stock writers, and keep
@@ -325,10 +332,11 @@ docker compose down
 ```
 
 `down` preserves both volumes. These stop-service examples do not exercise lost
-responses after an actual decrement, database lock exhaustion, or crash timing;
-those paths have only been statically reviewed. Do not mistake unavailable-service
-checks for proof of cross-service atomicity. No execution output or completed
-design report is supplied.
+responses after an actual decrement, database lock exhaustion, or crash timing.
+Focused mocks tested ambiguous and malformed decrement responses; real crash
+timing and lock exhaustion were not exercised. Unavailable-service checks do not
+prove cross-service atomicity. Actual output and the final design report are
+available in [docs/](docs/README.md).
 
 ## Catalog data and API
 
@@ -375,8 +383,11 @@ also uses a write transaction; a startup database failure prevents startup.
 
 ## Catalog manual checks (Windows PowerShell)
 
-These commands have **not** been executed as part of this implementation. Run
-from the repository root. A here-string piped to `--data-binary '@-'` avoids
+Catalog search, validation, updates, concurrency, and persistence were verified
+in Step 4; see [verification.md](docs/verification.md) for the recorded evidence.
+The following commands illustrate reproduction and restoration rather than a
+verbatim test transcript. Run from the repository root. A here-string piped to
+`--data-binary '@-'` avoids
 PowerShell/native-command JSON quoting differences. Perform updates without
 other writers if you want to restore the exact original values afterward.
 

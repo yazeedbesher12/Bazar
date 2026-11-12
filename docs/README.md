@@ -1,16 +1,15 @@
 # Submission documentation
 
-The eventual submission should include a design report explaining the two-tier
-architecture, service responsibilities, REST API contracts, interservice calls,
-separate SQLite ownership, concurrency/stock handling, and container deployment.
-Document implementation decisions and known limitations as the lab progresses.
+The submission documents are:
 
-Capture actual execution output demonstrating startup and health checks for all
-three services, both search topics, book info, CLI/gateway purchases, stock
-changes, restart persistence, and relevant failure cases. Record the commands and observed
-responses so results can be reproduced; never include secrets.
+- [Design report](design-report.md): architecture, implementation, concurrency,
+  evaluation, trade-offs, limitations, and running instructions.
+- [PDF report](design-report.pdf): A4 edition for submission.
+- [Verification record](verification.md): actual Step 4 host and Docker checks,
+  results, and historical environment blockers.
+- [Sample output](sample-output.txt): captured CLI and verification output.
 
-The root README contains the request flows and test instructions. Completed Step
-4 host-side and Docker evidence is in [verification.md](verification.md), with
-readable captured output in [sample-output.txt](sample-output.txt). This is
-verification documentation, not the final design report.
+The [root README](../README.md) contains complete setup, API, CLI, and test
+instructions. The report summarizes the verified implementation; the evidence
+files retain the original measurements and distinguish host mocks from real
+Docker execution.

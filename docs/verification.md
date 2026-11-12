@@ -37,7 +37,9 @@ three application containers.
 
 ## Commands executed
 
-The material commands actually run from the repository root were:
+The commands below were run from the repository root during Step 4. They are a
+consolidated record rather than a complete shell transcript; failures from the
+initial Docker-unavailable run are retained as historical evidence.
 
 ```powershell
 git status --short --branch
@@ -61,7 +63,6 @@ docker info
 docker compose -p bazar_step4_docker_20261113 -f compose.yaml config
 docker compose -p bazar_step4_docker_20261113 -f compose.yaml up --build -d
 docker compose -p bazar_step4_docker_20261113 -f compose.yaml ps -a
-docker compose -p bazar_step4_docker_20261113 -f compose.yaml exec -T SERVICE ...
 docker compose -p bazar_step4_docker_20261113 -f compose.yaml restart frontend catalog order
 docker compose -p bazar_step4_docker_20261113 -f compose.yaml stop catalog
 docker compose -p bazar_step4_docker_20261113 -f compose.yaml start catalog
@@ -69,6 +70,24 @@ docker compose -p bazar_step4_docker_20261113 -f compose.yaml stop order
 docker compose -p bazar_step4_docker_20261113 -f compose.yaml start order
 docker compose -p bazar_step4_docker_20261113 -f compose.yaml logs --no-color frontend catalog order
 ```
+
+The earlier version of this record included `exec -T SERVICE ...` in the list
+above. That text was shorthand for several container inspections, not a literal
+executed command. The following specific read-only inspections were executed
+during the Docker continuation:
+
+```powershell
+docker compose -p bazar_step4_docker_20261113 -f compose.yaml exec -T frontend env
+docker compose -p bazar_step4_docker_20261113 -f compose.yaml exec -T frontend getent hosts catalog order
+docker compose -p bazar_step4_docker_20261113 -f compose.yaml exec -T catalog findmnt -T /data
+docker compose -p bazar_step4_docker_20261113 -f compose.yaml exec -T catalog ls -l /data
+docker compose -p bazar_step4_docker_20261113 -f compose.yaml exec -T order findmnt -T /data
+docker compose -p bazar_step4_docker_20261113 -f compose.yaml exec -T order ls -l /data
+docker compose -p bazar_step4_docker_20261113 -f compose.yaml exec -T order getent hosts catalog
+```
+
+README manual command blocks are illustrative reproduction guides. They should
+not be interpreted as additional executed commands or new measurements.
 
 The first dependency install attempt was sandbox-blocked from the network. The
 approved retry installed only the repository's pinned dependencies in the
