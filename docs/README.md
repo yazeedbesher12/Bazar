@@ -10,6 +10,7 @@ three services, both search topics, book info, CLI/gateway purchases, stock
 changes, restart persistence, and relevant failure cases. Record the commands and observed
 responses so results can be reproduced; never include secrets.
 
-Expanded Step 3 supplies these request flows and manual check instructions in the
-root README. No execution output has been captured or verified, and no completed
-design report has been fabricated.
+The root README contains the request flows and test instructions. Completed Step
+4 host-side and Docker evidence is in [verification.md](verification.md), with
+readable captured output in [sample-output.txt](sample-output.txt). This is
+verification documentation, not the final design report.

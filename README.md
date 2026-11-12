@@ -25,7 +25,9 @@ The host client calls Frontend only. Frontend calls Catalog for search/info and
 Order for purchases; Order calls Catalog for book details and an atomic stock
 decrement. Only Catalog accesses the books database, and only Order accesses the
 attempt log. There are exactly three service containers; the CLI runs on the host.
-There is no GUI, authentication, message broker, or test infrastructure. Flask
+There is no GUI, authentication, or message broker. A host-side `unittest` suite
+uses temporary SQLite files and focused request mocks; it does not add a fourth
+service container. Flask
 also supplies automatic HEAD/OPTIONS handling where appropriate.
 
 ## Prerequisites
@@ -123,6 +125,25 @@ docker compose down
 This removes the containers and network while retaining the two named volumes.
 
 See [docs/README.md](docs/README.md) for eventual submission documentation.
+
+## Automated tests
+
+Install the pinned dependencies in an ignored virtual environment, then run the
+repeatable host-side suite:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r catalog/requirements.txt -r order/requirements.txt -r frontend/requirements.txt -r client/requirements.txt
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe tests/capture_sample.py
+```
+
+The suite creates and deletes its own temporary databases. It covers API input
+validation, forwarding, purchase records, atomic stock updates, a 12-request
+concurrency case, persistence initialization, failure injection, and CLI exit
+behavior. Container startup, mounts, networking, and restart behavior still
+require a running Docker Engine and are recorded separately in
+[`docs/verification.md`](docs/verification.md).
 
 ## Endpoint table
 

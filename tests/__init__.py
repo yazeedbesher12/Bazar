@@ -1,0 +1,1 @@
+"""Bazar verification tests."""

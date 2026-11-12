@@ -1,0 +1,119 @@
+Command: .\.venv\Scripts\python.exe -m unittest discover -s tests -v
+
+----------------------------------------------------------------------
+Ran 14 tests in 1.903s
+
+OK
+
+Command: .\.venv\Scripts\python.exe tests\capture_sample.py
+
+> client.py search "distributed systems"
+1: How to get a good grade in DOS in 40 minutes a day.
+2: RPCs for Noobs.
+
+> client.py info 1
+Book 1: How to get a good grade in DOS in 40 minutes a day.
+Topic: distributed systems
+Quantity: 10
+Price: 10.00
+
+> client.py purchase 1
+bought book How to get a good grade in DOS in 40 minutes a day.
+Attempt: 6a01ffff4b474d59ab86a0b8968e214d
+Book: 1
+Quantity: 1
+Price: 10.00
+Status: completed
+Completed at: 2026-11-12T22:06:17.114063+00:00
+
+The readable CLI sample above was captured from the real CLI formatter while it
+called the real Frontend, Order, and Catalog Flask handlers through the isolated
+in-process verification harness. It is not claimed as Docker/container output.
+
+Docker build/start attempt:
+
+unable to get image 'bazar_step4_20261113-catalog': failed to connect to the
+docker API at npipe:////./pipe/docker_engine; check if the path is correct and if
+the daemon is running: open //./pipe/docker_engine: The system cannot find the
+file specified.
+
+compose_up_exit=1
+
+Docker continuation (isolated project bazar_step4_docker_20261113):
+
+health_5000={"service":"frontend","status":"ok"}
+health_5001={"service":"catalog","status":"ok"}
+health_5002={"service":"order","status":"ok"}
+running_service_count=3
+
+Real host CLI output:
+
+> client.py search "distributed systems"
+1: How to get a good grade in DOS in 40 minutes a day.
+2: RPCs for Noobs.
+
+> client.py info 3
+Book 3: Xen and the Art of Surviving Undergraduate School.
+Topic: undergraduate school
+Quantity: 14
+Price: 17.25
+
+> client.py purchase 3
+bought book Xen and the Art of Surviving Undergraduate School.
+Attempt: f04517a6e20543f7b3d20d71df169516
+Book: 3
+Quantity: 1
+Price: 17.25
+Status: completed
+Completed at: 2026-11-12T22:16:24.076472+00:00
+
+Restart persistence:
+
+before_book={"id":3,"price":17.25,"quantity":13,"title":"Xen and the Art of Surviving Undergraduate School.","topic":"undergraduate school"}
+after_book={"id":3,"price":17.25,"quantity":13,"title":"Xen and the Art of Surviving Undergraduate School.","topic":"undergraduate school"}
+before_orders=[('f04517a6e20543f7b3d20d71df169516', 3, 'Xen and the Art of Surviving Undergraduate School.', 1725, 'completed', '2026-11-12T22:16:24.057513+00:00', '2026-11-12T22:16:24.076472+00:00')]
+after_orders=[('f04517a6e20543f7b3d20d71df169516', 3, 'Xen and the Art of Surviving Undergraduate School.', 1725, 'completed', '2026-11-12T22:16:24.057513+00:00', '2026-11-12T22:16:24.076472+00:00')]
+persistence_match=true
+
+Catalog outage:
+
+search 503 {"error":{"code":"service_unavailable","message":"Downstream service unavailable."}} elapsed 4.008
+info 503 {"error":{"code":"service_unavailable","message":"Downstream service unavailable."}} elapsed 3.890
+purchase 503 {"error":{"code":"service_unavailable","message":"Downstream service unavailable."}} elapsed 3.877
+catalog_recovery_poll_attempts=2
+
+Order outage:
+
+search 200
+info 200
+purchase 503 {"error":{"code":"outcome_unknown","message":"Purchase outcome is unknown; do not retry automatically."}} elapsed 3.988
+stock_before_order_outage=12
+stock_after_failed_purchase=12
+order_recovery_poll_attempts=2
+stock_after_recovered_purchase=11
+
+Docker concurrency:
+
+concurrency_statuses=201,409,409,201,201,409,201,201,409,409,409,409
+success_count=5 out_of_stock_count=7
+final_stock=0
+completed_count=5 failed_count=7 unique_attempts=12
+response_ids_match_database_ids=true
+
+Final automated run:
+
+----------------------------------------------------------------------
+Ran 14 tests in 2.512s
+
+OK
+
+Final logs:
+
+log_lines=282 internal_error_matches=0
+
+Isolated cleanup:
+
+remaining_containers=0
+remaining_volumes=0
+remaining_networks=0
+remaining_images=0
