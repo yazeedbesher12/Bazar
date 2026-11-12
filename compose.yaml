@@ -15,6 +15,8 @@ services:
       dockerfile: catalog/Dockerfile
     ports:
       - "5001:5001"
+    environment:
+      CATALOG_DB_PATH: ${CATALOG_DB_PATH:-/data/catalog.sqlite3}
     volumes:
       - catalog_data:/data
 
