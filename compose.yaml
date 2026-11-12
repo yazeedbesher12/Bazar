@@ -28,6 +28,7 @@ services:
       - "5002:5002"
     environment:
       CATALOG_URL: ${CATALOG_URL:-http://catalog:5001}
+      ORDER_DB_PATH: ${ORDER_DB_PATH:-/data/order.sqlite3}
     volumes:
       - order_data:/data
 
